@@ -1,5 +1,6 @@
 package com.example.paint
 
+import android.os.Vibrator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
 import kotlin.math.min
@@ -24,6 +26,7 @@ class PaintView : View {
         var maxX = 2000
         var minY = 0
         var maxY = 1000
+
     }
 
     constructor(context: Context) : this(context, null) {
@@ -56,6 +59,8 @@ class PaintView : View {
         maxX = max(maxX, x)
         minY = min(minY, y)
         maxY = max(maxY, y)
+        performVibration()
+
 
         print(x)
         print(", ")
@@ -73,6 +78,14 @@ class PaintView : View {
         }
         postInvalidate()
         return false
+    }
+
+    private fun performVibration() {
+        // Gestion de la vibration
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (vibrator.hasVibrator()) {
+            vibrator.vibrate(500)
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
