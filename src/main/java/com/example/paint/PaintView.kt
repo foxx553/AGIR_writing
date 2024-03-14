@@ -23,7 +23,7 @@ class PaintView : View {
         var minX = 0
         var maxX = 2000
         var minY = 0
-        var maxY = 1000
+        var maxY = 1001
     }
 
     constructor(context: Context) : this(context, null) {

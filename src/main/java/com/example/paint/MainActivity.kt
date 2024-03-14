@@ -45,6 +45,5 @@ class MainActivity : ComponentActivity() {
                 maxX += (maxDelta - minDelta) / 2
             }
         }
-
     }
 }
