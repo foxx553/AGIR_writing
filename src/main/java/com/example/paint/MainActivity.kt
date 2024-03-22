@@ -17,7 +17,6 @@ class MainActivity : ComponentActivity() {
         var path = Path()
         var paintBrush = Paint()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,6 +44,5 @@ class MainActivity : ComponentActivity() {
                 maxX += (maxDelta - minDelta) / 2
             }
         }
-
     }
 }
