@@ -7,10 +7,13 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.os.Build
+import android.os.VibrationEffect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
@@ -63,6 +66,7 @@ class PaintView : View {
         params = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var x = event.x.toInt()
         var y = event.y.toInt()
@@ -71,17 +75,7 @@ class PaintView : View {
         maxX = max(maxX, x)
         minY = min(minY, y)
         maxY = max(maxY, y)
-        if (event.action == MotionEvent.ACTION_MOVE) {
-            if (getColorAtTouch(x, y) != 0) {
-                performVibration()
-            }
-        }
 
-        print(getColorAtTouch(x,y))
-        print("\n")
-        print(x)
-        print(", ")
-        println(y)
 
         when(event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -95,6 +89,15 @@ class PaintView : View {
                 path.lineTo(x.toFloat(), y.toFloat())
                 currentX=x
                 currentY=y
+                if (getColorAtTouch(x, y) == -1) {
+                    performVibration()
+                }
+
+                print(getColorAtTouch(x,y))
+                print("\n")
+                print(x)
+                print(", ")
+                println(y)
             }
             else -> return false
         }
@@ -102,10 +105,22 @@ class PaintView : View {
         return false
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun performVibration() {
-        // Gestion de la vibration
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (vibrator.hasVibrator()) {
+
+        // VibrationEffect.createOneShot() pour une seule vibration
+        // VibrationEffect.DEFAULT_AMPLITUDE pour une amplitude par défaut
+        val amplitudes = intArrayOf(0, 255, 0, 255) // Exemple d'intensités (0 à 255)
+        val timings = longArrayOf(4, 15, 4, 15) // Durée en millisecondes pour chaque amplitude
+
+        val vibrationEffect = VibrationEffect.createWaveform(timings, amplitudes, -1)
+        // Vérifier la version d'Android avant de lancer la vibration
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(vibrationEffect)
+            print("je le fais quand meme")
+        } else {
+            // Versions d'Android antérieures à Oreo, utilisez simplement vibrate()
             vibrator.vibrate(50)
         }
     }
@@ -149,7 +164,9 @@ class PaintView : View {
         pathA.lineTo(x + 3 * width / 4, y - height / 2) // Dessiner la barre horizontale du milieu
 
         canvas.drawPath(pathA, paintBrush)
-        Canvas(drawingBitmap).drawPath(path, paintBrush)
+        drawingBitmap?.eraseColor(Color.WHITE) // Remplit le bitmap en blanc
+        Canvas(drawingBitmap!!).drawPath(pathA, paintBrush)
+
 
 
         paintBrush.color = defaultColor
@@ -162,13 +179,9 @@ class PaintView : View {
         if (!::drawingBitmap.isInitialized) {
             return Color.BLACK
         }
-        val bitmapX = x - (width - drawingBitmap.width) / 2
-        val bitmapY = y - (height - drawingBitmap.height) / 2
-        return if (bitmapX >= 0 && bitmapX < drawingBitmap.width && bitmapY >= 0 && bitmapY < drawingBitmap.height) {
-            drawingBitmap.getPixel(bitmapX, bitmapY)
-        } else {
-            Color.BLACK
-        }
+        val bitmapX = x
+        val bitmapY = y
+        return drawingBitmap.getPixel(bitmapX, bitmapY)
     }
 
 
@@ -176,6 +189,7 @@ class PaintView : View {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         drawingBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     }
+
 
 
 
