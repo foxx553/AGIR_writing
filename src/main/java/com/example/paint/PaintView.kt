@@ -24,7 +24,7 @@ class PaintView : View {
 
     var params : ViewGroup.LayoutParams? = null
 
-    private var drawLetterA = false
+    private var drawLetter = false
     private var xOfA = 0f
     private var yOfA = 0f
 
@@ -82,7 +82,7 @@ class PaintView : View {
                 path.moveTo(x.toFloat(), y.toFloat())
                 xOfA = x.toFloat()
                 yOfA = y.toFloat()
-                drawLetterA = true
+                drawLetter = true
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -126,8 +126,8 @@ class PaintView : View {
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (drawLetterA) {
-            drawCapitalA(canvas, xOfA, yOfA)
+        if (drawLetter) {
+            drawCapitalB(canvas, xOfA, yOfA)
         }
 
         // Dessiner sur le bitmap
@@ -174,6 +174,45 @@ class PaintView : View {
 
         invalidate() // Mettre à jour la vue
     }
+
+    private fun drawCapitalB(canvas: Canvas, x: Float, y: Float) {
+        val width = 500f // Width of the letter B
+        val height = 1000f // Height of the letter B
+        val radius = width / 2 // Radius for the round parts of B
+
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Gray color
+            strokeWidth = 90f // Thicker brush stroke
+        }
+
+        val pathB = Path()
+
+        // Draw the vertical backbone of the B
+        pathB.moveTo(x, y)
+        pathB.lineTo(x, y - height)
+
+        // Draw the top bubble of the B
+        pathB.addArc(x-width-90, y-height/2, x + width, y , 270f, 180f)
+
+        // Draw the bottom bubble of the B
+        pathB.addArc(x-width-90, y-height, x + width, y-height/2 , 270f, 180f)
+
+        canvas.drawPath(pathB, paintBrush)
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathB, paintBrush)
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Refresh the view
+    }
+
+
+
+
 
     private fun getColorAtTouch(x: Int, y: Int): Int {
         if (!::drawingBitmap.isInitialized) {
