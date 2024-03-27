@@ -21,10 +21,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val whiteBtn = findViewById<ImageButton>(R.id.whiteColor)
+        val selectBtn = findViewById<ImageButton>(R.id.select)
+        val letterDesc = findViewById<ImageButton>(R.id.description)
+        val eraseBtn = findViewById<ImageButton>(R.id.erase)
         val finishBtn = findViewById<ImageButton>(R.id.finish)
 
-        whiteBtn.setOnClickListener {
+        selectBtn.setOnClickListener {
+            setContentView(R.layout.letter_selection)
+        }
+
+        eraseBtn.setOnClickListener {
             path.reset()
         }
 
