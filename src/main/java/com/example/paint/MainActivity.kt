@@ -1,5 +1,6 @@
 package com.example.paint
 
+import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Path
 import android.os.Bundle
@@ -10,6 +11,7 @@ import com.example.paint.PaintView.Companion.maxX
 import com.example.paint.PaintView.Companion.maxY
 import com.example.paint.PaintView.Companion.minX
 import com.example.paint.PaintView.Companion.minY
+import java.lang.Exception
 
 class MainActivity : ComponentActivity() {
 
@@ -22,12 +24,17 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
         val selectBtn = findViewById<ImageButton>(R.id.select)
+        val selectedLetter = intent.getStringExtra("selected_letter")
         val letterDesc = findViewById<ImageButton>(R.id.description)
         val eraseBtn = findViewById<ImageButton>(R.id.erase)
         val finishBtn = findViewById<ImageButton>(R.id.finish)
 
+        letterDesc.contentDescription = selectedLetter
+
         selectBtn.setOnClickListener {
-            setContentView(R.layout.letter_selection)
+            val intent = Intent(this, LetterSelection::class.java)
+            startActivity(intent)
+
         }
 
         eraseBtn.setOnClickListener {
