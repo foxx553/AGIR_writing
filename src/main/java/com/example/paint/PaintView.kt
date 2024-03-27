@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.VibrationEffect
 import android.util.AttributeSet
@@ -17,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
+import com.example.paint.MainActivity.Companion.pathLetter
 import kotlin.math.min
 import kotlin.math.max
 
@@ -32,15 +34,24 @@ class PaintView : View {
     private var currentY =0
 
 
+
+
+
+    private var defaultColor = paintBrush.color
+    private var defaultStrokeWidth = paintBrush.strokeWidth
+
+
     private lateinit var drawingBitmap: Bitmap
+
+    private var timer=0
 
 
     companion object {
         var currentBrush = Color.BLACK
-        var minX = 0
-        var maxX = 2000
-        var minY = 0
-        var maxY = 1000
+        var minX = 50
+        var maxX = 1000
+        var minY = 50
+        var maxY = 950
 
     }
 
@@ -79,10 +90,13 @@ class PaintView : View {
 
         when(event.action) {
             MotionEvent.ACTION_DOWN -> {
+
                 path.moveTo(x.toFloat(), y.toFloat())
                 xOfA = x.toFloat()
                 yOfA = y.toFloat()
-                drawLetter = true
+                if(MainActivity.isDone) {
+                    drawLetter = true
+                }
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -111,24 +125,32 @@ class PaintView : View {
 
         // VibrationEffect.createOneShot() pour une seule vibration
         // VibrationEffect.DEFAULT_AMPLITUDE pour une amplitude par défaut
-        val amplitudes = intArrayOf(0, 255, 0, 255) // Exemple d'intensités (0 à 255)
-        val timings = longArrayOf(4, 15, 4, 15) // Durée en millisecondes pour chaque amplitude
+        val amplitudes = intArrayOf(255, 255, 0, 255) // Exemple d'intensités (0 à 255)
+        val timings = longArrayOf(400, 15, 4, 15) // Durée en millisecondes pour chaque amplitude
 
         val vibrationEffect = VibrationEffect.createWaveform(timings, amplitudes, -1)
         // Vérifier la version d'Android avant de lancer la vibration
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(vibrationEffect)
-            print("je le fais quand meme")
+            print(drawingBitmap.width)
         } else {
             // Versions d'Android antérieures à Oreo, utilisez simplement vibrate()
             vibrator.vibrate(50)
         }
+        timer++
+        if(timer%100==0){
+            playInstruction()
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (drawLetter) {
+
+        if (drawLetter && MainActivity.isDone) {
             drawCapitalB(canvas, xOfA, yOfA)
+            MainActivity.isDone=false
+            drawLetter=false
         }
+
 
         // Dessiner sur le bitmap
         val bitmapCanvas = Canvas(drawingBitmap)
@@ -136,6 +158,22 @@ class PaintView : View {
 
 
         // Dessiner le chemin sur le canvas principal
+
+        defaultColor = paintBrush.color
+        defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Gray color
+            strokeWidth = 90f // Thicker brush stroke
+        }
+
+        canvas.drawPath(pathLetter, paintBrush)
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+
+
         canvas.drawPath(path, paintBrush)
 
         invalidate()
@@ -164,9 +202,11 @@ class PaintView : View {
         pathA.lineTo(x + 3 * width / 4, y - height / 2) // Dessiner la barre horizontale du milieu
 
         canvas.drawPath(pathA, paintBrush)
-        drawingBitmap?.eraseColor(Color.WHITE) // Remplit le bitmap en blanc
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
         Canvas(drawingBitmap!!).drawPath(pathA, paintBrush)
+        canvas.drawPath(pathA, paintBrush)
 
+        pathLetter=pathA
 
 
         paintBrush.color = defaultColor
@@ -200,16 +240,18 @@ class PaintView : View {
         // Draw the bottom bubble of the B
         pathB.addArc(x-width-90, y-height, x + width, y-height/2 , 270f, 180f)
 
-        canvas.drawPath(pathB, paintBrush)
         drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
         Canvas(drawingBitmap!!).drawPath(pathB, paintBrush)
+        canvas.drawPath(pathB, paintBrush)
+
+        pathLetter=pathB
+
 
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
 
         invalidate() // Refresh the view
     }
-
 
 
 
@@ -228,6 +270,86 @@ class PaintView : View {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         drawingBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     }
+
+    fun playInstruction() {
+        var xTemp=currentX
+        var yTemp=currentY
+
+        var distanceD=5000
+        var distanceG=5000
+        var distanceH=5000
+        var distanceB=5000
+        var min=5000
+
+        var found = false
+        while(xTemp<maxX && found==false){
+            xTemp+=10
+            if(drawingBitmap.getPixel(xTemp, yTemp)==-7829368){
+                found=true
+                distanceD=xTemp-currentX
+                min=distanceD
+            }
+
+        }
+        xTemp=currentX
+        yTemp=currentY
+
+        found = false
+        while(xTemp>minX && found==false){
+            if(drawingBitmap.getPixel(xTemp, yTemp)==-7829368){
+                found=true
+                distanceG=currentX-xTemp
+                if(min>distanceG){
+                    min=distanceG
+                }
+            }
+            xTemp-=10
+        }
+        xTemp=currentX
+        yTemp=currentY
+
+        found = false
+        while(yTemp<maxY && found==false){
+            yTemp+=10
+            if(drawingBitmap.getPixel(xTemp, yTemp)==-7829368){
+                found=true
+                distanceB=yTemp-currentY
+                if(min>distanceB){
+                    min=distanceB
+                }
+            }
+
+        }
+
+        xTemp=currentX
+        yTemp=currentY
+
+        found = false
+        while(yTemp>minY && found==false){
+            yTemp-=10
+            if(drawingBitmap.getPixel(xTemp, yTemp)==-7829368){
+                found=true
+                distanceH=currentY-yTemp
+                if(min>distanceH){
+                    MainActivity.mediaPlayerH?.start()
+                    return
+                }
+            }
+
+        }
+
+        if(distanceD==min){
+            MainActivity.mediaPlayerD?.start()
+        }
+        if(distanceG==min){
+            MainActivity.mediaPlayerG?.start()
+        }
+        if(distanceB==min){
+            MainActivity.mediaPlayerB?.start()
+        }
+        return
+    }
+
 
 
 
