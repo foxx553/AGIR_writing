@@ -25,6 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LetterSelection" android:theme="@style/Theme.AppCompat" />
+
     </application>
 
 </manifest>

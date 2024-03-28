@@ -1,5 +1,6 @@
 package com.example.paint
 
+import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Path
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.example.paint.PaintView.Companion.maxY
 import com.example.paint.PaintView.Companion.minX
 import com.example.paint.PaintView.Companion.minY
 import android.media.MediaPlayer
+import java.lang.Exception
 
 
 class MainActivity : ComponentActivity() {
@@ -41,10 +43,21 @@ class MainActivity : ComponentActivity() {
 
 
 
-        val whiteBtn = findViewById<ImageButton>(R.id.whiteColor)
+        val selectBtn = findViewById<ImageButton>(R.id.select)
+        val selectedLetter = intent.getStringExtra("selected_letter")
+        val letterDesc = findViewById<ImageButton>(R.id.description)
+        val eraseBtn = findViewById<ImageButton>(R.id.erase)
         val finishBtn = findViewById<ImageButton>(R.id.finish)
 
-        whiteBtn.setOnClickListener {
+        letterDesc.contentDescription = selectedLetter
+
+        selectBtn.setOnClickListener {
+            val intent = Intent(this, LetterSelection::class.java)
+            startActivity(intent)
+
+        }
+
+        eraseBtn.setOnClickListener {
             path.reset()
         }
 
