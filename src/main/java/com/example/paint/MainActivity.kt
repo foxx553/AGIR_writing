@@ -11,17 +11,37 @@ import com.example.paint.PaintView.Companion.maxX
 import com.example.paint.PaintView.Companion.maxY
 import com.example.paint.PaintView.Companion.minX
 import com.example.paint.PaintView.Companion.minY
+import android.media.MediaPlayer
 import java.lang.Exception
+
 
 class MainActivity : ComponentActivity() {
 
     companion object {
         var path = Path()
+        var pathLetter = Path()
         var paintBrush = Paint()
+        var isDone = true
+        var mediaPlayerD: MediaPlayer? = null
+        var mediaPlayerG: MediaPlayer? = null
+        var mediaPlayerH: MediaPlayer? = null
+        var mediaPlayerB: MediaPlayer? = null
+
+
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mediaPlayerD = MediaPlayer.create(this, R.raw.droite)
+        mediaPlayerG = MediaPlayer.create(this, R.raw.gauche)
+        mediaPlayerH = MediaPlayer.create(this, R.raw.haut)
+        mediaPlayerB = MediaPlayer.create(this, R.raw.bas)
+
+
+
+
+
 
         val selectBtn = findViewById<ImageButton>(R.id.select)
         val selectedLetter = intent.getStringExtra("selected_letter")
@@ -42,8 +62,13 @@ class MainActivity : ComponentActivity() {
         }
 
         finishBtn.setOnClickListener {
+            isDone=true
+            path.reset()
+            pathLetter.reset()
+
             // Square frame
-            var maxDelta = 0
+
+            /*var maxDelta = 0
             var minDelta = 0
             if (maxX - minX >= maxY - minY) {
                 maxDelta = maxX - minX
@@ -55,7 +80,8 @@ class MainActivity : ComponentActivity() {
                 minDelta = maxX - minX
                 minX -= (maxDelta - minDelta) / 2
                 maxX += (maxDelta - minDelta) / 2
-            }
+            }*/
         }
     }
+
 }
