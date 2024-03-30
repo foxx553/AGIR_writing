@@ -27,10 +27,13 @@ class MainActivity : ComponentActivity() {
         var mediaPlayerG: MediaPlayer? = null
         var mediaPlayerH: MediaPlayer? = null
         var mediaPlayerB: MediaPlayer? = null
+        var selectedLetter : String? = null
 
 
 
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
 
         val selectBtn = findViewById<ImageButton>(R.id.select)
-        val selectedLetter = intent.getStringExtra("selected_letter")
+        selectedLetter = intent.getStringExtra("selected_letter")
         val letterDesc = findViewById<ImageView>(R.id.description)
         val eraseBtn = findViewById<ImageButton>(R.id.erase)
         val finishBtn = findViewById<ImageButton>(R.id.finish)
@@ -61,6 +64,9 @@ class MainActivity : ComponentActivity() {
             letterDesc.contentDescription = dicoLettreDesc[selectedLetter] + "Désactivez le talkback pour dessiner et réactivez le une fois le dessin terminé pour appuyer sur le bouton valider."
 
         selectBtn.setOnClickListener {
+            isDone=true
+            path.reset()
+            pathLetter.reset()
             val intent = Intent(this, LetterSelection::class.java)
             startActivity(intent)
 

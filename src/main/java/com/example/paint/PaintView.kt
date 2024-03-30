@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
 import com.example.paint.MainActivity.Companion.pathLetter
+import com.example.paint.MainActivity.Companion.selectedLetter
 import kotlin.math.min
 import kotlin.math.max
 
@@ -146,7 +147,10 @@ class PaintView : View {
     override fun onDraw(canvas: Canvas) {
 
         if (drawLetter && MainActivity.isDone) {
-            drawCapitalB(canvas, xOfA, yOfA)
+            when(selectedLetter) {
+                "A",null -> drawCapitalA(canvas, xOfA, yOfA)
+                "B" -> drawCapitalB(canvas, xOfA, yOfA)
+            }
             MainActivity.isDone=false
             drawLetter=false
         }
