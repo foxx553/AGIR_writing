@@ -153,6 +153,9 @@ class PaintView : View {
             when(selectedLetter) {
                 "A",null -> drawCapitalA(canvas, xOfA, yOfA)
                 "B" -> drawCapitalB(canvas, xOfA, yOfA)
+                "D" -> drawCapitalD(canvas, xOfA, yOfA)
+                "E" -> drawCapitalE(canvas, xOfA, yOfA)
+                "G" -> drawCapitalG(canvas, xOfA, yOfA)
             }
             MainActivity.isDone=false
             drawLetter=false
@@ -237,10 +240,10 @@ class PaintView : View {
         pathB.moveTo(x, y)
         pathB.lineTo(x, y - letterHeight)
 
-        // Draw the top bubble of the B
+        // Draw the bottom bubble of the B
         pathB.addArc(x- letterWidth-90, y- letterHeight/2, x + letterWidth, y , 270f, 180f)
 
-        // Draw the bottom bubble of the B
+        // Draw the top bubble of the B
         pathB.addArc(x- letterWidth-90, y- letterHeight, x + letterWidth, y- letterHeight/2 , 270f, 180f)
 
         drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
@@ -249,6 +252,100 @@ class PaintView : View {
 
         pathLetter=pathB
 
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Refresh the view
+    }
+
+    private fun drawCapitalD(canvas: Canvas, x: Float, y: Float) {
+        val radius = letterWidth / 2 // Radius for the round parts of B
+
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Gray color
+            strokeWidth = 90f // Thicker brush stroke
+        }
+
+        val pathD = Path()
+
+        // Draw the vertical backbone of the B
+        pathD.moveTo(x, y)
+        pathD.lineTo(x, y - letterHeight)
+
+        // Draw the top bubble of the B
+        pathD.addArc(x- letterWidth-90, y- letterHeight, x + letterWidth, y , 270f, 180f)
+
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathD, paintBrush)
+        canvas.drawPath(pathD, paintBrush)
+
+        pathLetter=pathD
+
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Refresh the view
+    }
+
+    private fun drawCapitalE(canvas: Canvas, x: Float, y: Float) {
+        val radius = letterWidth / 2 // Radius for the round parts of B
+
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Gray color
+            strokeWidth = 90f // Thicker brush stroke
+        }
+
+        val pathE = Path()
+
+        pathE.moveTo(x, y)
+        pathE.lineTo(x- letterWidth,y)
+        pathE.lineTo(x - letterWidth, y + letterHeight)
+        pathE.lineTo(x,y+ letterHeight)
+        pathE.moveTo(x - letterWidth, y + letterHeight/2)
+        pathE.lineTo(x - letterWidth/3,y + letterHeight/2)
+
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathE, paintBrush)
+        canvas.drawPath(pathE, paintBrush)
+
+        pathLetter=pathE
+
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Refresh the view
+    }
+    private fun drawCapitalG(canvas: Canvas, x: Float, y: Float) {
+
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Gray color
+            strokeWidth = 90f // Thicker brush stroke
+        }
+
+        val pathG = Path()
+
+        pathG.moveTo(x , y)
+        pathG.arcTo(x - letterWidth/2 - 70, y - letterHeight / 2 +40, x + letterWidth/2 + 20, y + letterHeight / 2 - 40, 0f, 300f, false)
+
+
+
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathG, paintBrush)
+        canvas.drawPath(pathG, paintBrush)
+
+        pathLetter = pathG
 
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
