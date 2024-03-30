@@ -23,6 +23,9 @@ import com.example.paint.MainActivity.Companion.selectedLetter
 import kotlin.math.min
 import kotlin.math.max
 
+val letterHeight = 1000f //hauteur pour toutes les lettres
+val letterWidth = 500f   //largeur pour toutes les lettres
+
 class PaintView : View {
 
     var params : ViewGroup.LayoutParams? = null
@@ -184,8 +187,6 @@ class PaintView : View {
     }
 
     private fun drawCapitalA(canvas: Canvas, x: Float, y: Float) {
-        val width = 600f // Largeur de la lettre A
-        val height = 1000f // Hauteur de la lettre A
 
         val defaultColor = paintBrush.color
         val defaultStrokeWidth = paintBrush.strokeWidth
@@ -200,10 +201,10 @@ class PaintView : View {
 
         // Dessiner la lettre A à la position spécifiée
         pathA.moveTo(x, y) // Déplacer le pinceau au point de départ
-        pathA.lineTo(x + width / 2, y - height) // Dessiner la première ligne ascendante
-        pathA.lineTo(x + width, y) // Dessiner la barre horizontale du milieu
-        pathA.moveTo(x + width / 4, y - height / 2) // Déplacer le pinceau au milieu
-        pathA.lineTo(x + 3 * width / 4, y - height / 2) // Dessiner la barre horizontale du milieu
+        pathA.lineTo(x + letterWidth / 2, y - letterHeight) // Dessiner la première ligne ascendante
+        pathA.lineTo(x + letterWidth, y) // Dessiner la barre horizontale du milieu
+        pathA.moveTo(x + letterWidth / 4, y - letterHeight / 2) // Déplacer le pinceau au milieu
+        pathA.lineTo(x + 3 * letterWidth / 4, y - letterHeight / 2) // Dessiner la barre horizontale du milieu
 
         canvas.drawPath(pathA, paintBrush)
         drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
@@ -220,9 +221,7 @@ class PaintView : View {
     }
 
     private fun drawCapitalB(canvas: Canvas, x: Float, y: Float) {
-        val width = 500f // Width of the letter B
-        val height = 1000f // Height of the letter B
-        val radius = width / 2 // Radius for the round parts of B
+        val radius = letterWidth / 2 // Radius for the round parts of B
 
         val defaultColor = paintBrush.color
         val defaultStrokeWidth = paintBrush.strokeWidth
@@ -236,13 +235,13 @@ class PaintView : View {
 
         // Draw the vertical backbone of the B
         pathB.moveTo(x, y)
-        pathB.lineTo(x, y - height)
+        pathB.lineTo(x, y - letterHeight)
 
         // Draw the top bubble of the B
-        pathB.addArc(x-width-90, y-height/2, x + width, y , 270f, 180f)
+        pathB.addArc(x- letterWidth-90, y- letterHeight/2, x + letterWidth, y , 270f, 180f)
 
         // Draw the bottom bubble of the B
-        pathB.addArc(x-width-90, y-height, x + width, y-height/2 , 270f, 180f)
+        pathB.addArc(x- letterWidth-90, y- letterHeight, x + letterWidth, y- letterHeight/2 , 270f, 180f)
 
         drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
         Canvas(drawingBitmap!!).drawPath(pathB, paintBrush)
