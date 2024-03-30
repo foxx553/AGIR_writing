@@ -4,26 +4,49 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 class LetterSelection : AppCompatActivity() {
+
+    fun SwitchLetter(l: String){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("selected_letter", l) // Pass the selected letter as an extra parameter
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.letter_selection)
 
-        val buttonA = findViewById<Button>(R.id.A) // Assuming you have buttons for each letter
-        val buttonB = findViewById<Button>(R.id.B) // Example button B
+        val buttonA = findViewById<Button>(R.id.A)
+        val buttonB = findViewById<Button>(R.id.B)
+        val buttonC = findViewById<Button>(R.id.C)
+        val buttonD = findViewById<Button>(R.id.D)
+        val buttonE = findViewById<Button>(R.id.E)
 
         // Set OnClickListener for button A
         buttonA.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("selected_letter", "A") // Pass the selected letter as an extra parameter
-            startActivity(intent)
-            println("Ca marche")
+            SwitchLetter("A");
+
         }
 
         // Set OnClickListener for button B
         buttonB.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("selected_letter", "B") // Pass the selected letter as an extra parameter
-            startActivity(intent)
+            SwitchLetter("B");
+
+        }
+
+        buttonC.setOnClickListener {
+            SwitchLetter("C");
+
+        }
+
+        buttonD.setOnClickListener {
+            SwitchLetter("D");
+
+        }
+
+        buttonE.setOnClickListener {
+            SwitchLetter("E");
+
         }
 
         // Add OnClickListener for other buttons as needed
