@@ -55,7 +55,6 @@ class MainActivity : ComponentActivity() {
         val selectBtn = findViewById<ImageButton>(R.id.select)
         selectedLetter = intent.getStringExtra("selected_letter")
         val letterDesc = findViewById<ImageView>(R.id.description)
-        val eraseBtn = findViewById<ImageButton>(R.id.erase)
         val finishBtn = findViewById<ImageButton>(R.id.finish)
 
         val dicoLettreDesc = mutableMapOf<String, String>()
@@ -68,7 +67,7 @@ class MainActivity : ComponentActivity() {
         dicoLettreDesc["VertLine"] = "Ceci est un dessin de calibration pour faire une ligne verticale de la largeur des lettres que vous aurez à déssiner. Placez vous en bas de l'écran. Orientez vous à 0h et tracez un trait."
 
         if(selectedLetter !=null)
-            letterDesc.contentDescription = dicoLettreDesc[selectedLetter] + "Désactivez le talkback pour dessiner et réactivez le une fois le dessin terminé pour appuyer sur le bouton valider."
+            letterDesc.contentDescription = dicoLettreDesc[selectedLetter] + "Désactivez le talkback pour dessiner et réactivez le une fois le dessin terminé ou pour appuyer sur le bouton réinitialiser."
 
         selectBtn.setOnClickListener {
             isDone=true
@@ -77,10 +76,6 @@ class MainActivity : ComponentActivity() {
             val intent = Intent(this, LetterSelection::class.java)
             startActivity(intent)
 
-        }
-
-        eraseBtn.setOnClickListener {
-            path.reset()
         }
 
         finishBtn.setOnClickListener {

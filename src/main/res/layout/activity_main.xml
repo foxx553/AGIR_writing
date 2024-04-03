@@ -39,22 +39,12 @@
 
 
         <ImageButton
-            android:id="@+id/erase"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@color/white"
-            android:contentDescription="Effacer">
-
-        </ImageButton>
-
-        <ImageButton
             android:id="@+id/finish"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@color/green"
-            android:contentDescription="Valider">
+            android:contentDescription="Réinitialiser">
 
         </ImageButton>
 
