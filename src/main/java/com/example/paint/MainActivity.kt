@@ -59,6 +59,8 @@ class MainActivity : ComponentActivity() {
         dicoLettreDesc["C"] = "Placez vous dans la partie haute de l’écran. Tracez un arc de cercle orienté vers la gauche qui, si il y avait un trait long, partirait du début de ce trait et s’arreterait sur la fin de ce trait."
         dicoLettreDesc["D"] = "Placez vous dans la partie basse de l’écran. Orientez vous à 0h. Tracez un trait long. Réalisez un arc de cercle orienté vers la droite allant jusqu’à la fin du trait précédent."
         dicoLettreDesc["E"] = "Placez vous dans la partie haute de l’écran. Orientez vous à 9h. Tracez un trait moyen. Orientez vous à 6h. Tracez un trait long. Orientez vous à 3h. Tracez un trait moyen. Orientez vous à 9h. Avancez d’une longueur moyenne. Orientez vous à 3h. Tracez un trait moyen. Revenez sans écrire au centre de votre barre verticale. Orientez vous à 3h. Tracez un trait moyen."
+        dicoLettreDesc["HorizLine"] = "Ceci est un dessin de calibration pour faire une ligne horizontale de la largeur des lettres que vous aurez à déssiner. Placez vous à gauche de l'écran. Orientez vous à 3h et tracez un trait."
+        dicoLettreDesc["VertLine"] = "Ceci est un dessin de calibration pour faire une ligne verticale de la largeur des lettres que vous aurez à déssiner. Placez vous en bas de l'écran. Orientez vous à 0h et tracez un trait."
 
         if(selectedLetter !=null)
             letterDesc.contentDescription = dicoLettreDesc[selectedLetter] + "Désactivez le talkback pour dessiner et réactivez le une fois le dessin terminé pour appuyer sur le bouton valider."

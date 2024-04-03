@@ -22,6 +22,8 @@ class LetterSelection : AppCompatActivity() {
         val buttonD = findViewById<Button>(R.id.D)
         val buttonE = findViewById<Button>(R.id.E)
         val buttonG = findViewById<Button>(R.id.G)
+        val buttonHoriz = findViewById<Button>(R.id.HorizLine)
+        val buttonVert = findViewById<Button>(R.id.VertLine)
 
 
         // Set OnClickListener for button A
@@ -52,6 +54,14 @@ class LetterSelection : AppCompatActivity() {
         }
         buttonG.setOnClickListener {
             SwitchLetter("G");
+
+        }
+        buttonVert.setOnClickListener {
+            SwitchLetter("VertLine");
+
+        }
+        buttonHoriz.setOnClickListener {
+            SwitchLetter("HorizLine");
 
         }
 

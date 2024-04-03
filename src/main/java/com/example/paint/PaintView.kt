@@ -156,6 +156,8 @@ class PaintView : View {
                 "D" -> drawCapitalD(canvas, xOfA, yOfA)
                 "E" -> drawCapitalE(canvas, xOfA, yOfA)
                 "G" -> drawCapitalG(canvas, xOfA, yOfA)
+                "HorizLine" ->drawHorizontalLine(canvas, xOfA, yOfA)
+                "VertLine" ->drawVerticalLine(canvas, xOfA, yOfA)
             }
             MainActivity.isDone=false
             drawLetter=false
@@ -187,6 +189,68 @@ class PaintView : View {
         canvas.drawPath(path, paintBrush)
 
         invalidate()
+    }
+
+    private fun drawHorizontalLine(canvas: Canvas, x: Float, y: Float) {
+
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Couleur grise
+            strokeWidth = 90f // Largeur du pinceau plus large
+        }
+
+        val pathHorizLine = Path()
+
+
+
+        pathHorizLine.moveTo(x, y) // Déplacer le pinceau au point de départ
+        pathHorizLine.lineTo(x + letterWidth, y) // Dessiner la ligne
+
+        canvas.drawPath(pathHorizLine, paintBrush)
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathHorizLine, paintBrush)
+        canvas.drawPath(pathHorizLine, paintBrush)
+
+        pathLetter=pathHorizLine
+
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Mettre à jour la vue
+    }
+
+    private fun drawVerticalLine(canvas: Canvas, x: Float, y: Float) {
+
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Couleur grise
+            strokeWidth = 90f // Largeur du pinceau plus large
+        }
+
+        val pathHorizLine = Path()
+
+
+
+        pathHorizLine.moveTo(x, y) // Déplacer le pinceau au point de départ
+        pathHorizLine.lineTo(x, y - letterHeight) // Dessiner la ligne
+
+        canvas.drawPath(pathHorizLine, paintBrush)
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathHorizLine, paintBrush)
+        canvas.drawPath(pathHorizLine, paintBrush)
+
+        pathLetter=pathHorizLine
+
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Mettre à jour la vue
     }
 
     private fun drawCapitalA(canvas: Canvas, x: Float, y: Float) {

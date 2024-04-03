@@ -16,6 +16,20 @@
             android:layout_weight="1">
 
             <Button
+                android:id="@+id/HorizLine"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="----" />
+
+            <Button
+                android:id="@+id/VertLine"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="|" />
+
+            <Button
                 android:id="@+id/A"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -29,19 +43,6 @@
                 android:text="B"
                 android:layout_weight="1"/>
 
-            <Button
-                android:id="@+id/C"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="C"
-                android:layout_weight="1"/>
-
-            <Button
-                android:id="@+id/D"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="D"
-                android:layout_weight="1"/>
         </TableRow>
 
         <TableRow
@@ -57,11 +58,11 @@
                 android:layout_weight="1"/>
 
             <Button
-                android:id="@+id/F"
+                android:id="@+id/D"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="F"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="D" />
 
             <Button
                 android:id="@+id/G"
@@ -230,8 +231,23 @@
                 android:id="@+id/Z"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Z"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="Z" />
+
+            <Button
+                android:id="@+id/C"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="C" />
+
+            <Button
+                android:id="@+id/F"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="F" />
+
         </TableRow>
     </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
