@@ -14,12 +14,15 @@ import com.example.paint.PaintView.Companion.minY
 import android.media.MediaPlayer
 import android.widget.ImageView
 import java.lang.Exception
+import kotlin.collections.MutableList
+
 
 
 class MainActivity : ComponentActivity() {
 
     companion object {
         var path = Path()
+        var listeCheckpoints: MutableList<Checkpoint> = mutableListOf()
         var pathLetter = Path()
         var paintBrush = Paint()
         var isDone = true
@@ -32,6 +35,8 @@ class MainActivity : ComponentActivity() {
 
 
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

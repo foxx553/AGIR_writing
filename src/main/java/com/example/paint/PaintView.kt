@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
+import com.example.paint.MainActivity.Companion.listeCheckpoints
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
 import com.example.paint.MainActivity.Companion.pathLetter
@@ -109,6 +110,13 @@ class PaintView : View {
                 currentY=y
                 if (getColorAtTouch(x, y) == -1) {
                     performVibration()
+                }
+
+                for (checkpoint in listeCheckpoints) {
+                    // Vérifier si les coordonnées x et y sont dans le checkpoint actuel
+                    if (checkpoint.isIn(x.toFloat(), y.toFloat())) {
+                        println("Les coordonnées ($x, $y) sont dans le checkpoint.")
+                    }
                 }
 
                 print(getColorAtTouch(x,y))
@@ -280,9 +288,18 @@ class PaintView : View {
 
         pathLetter=pathA
 
+        var checkpoint1=Checkpoint(x,x+90,y-50,y+50,false)
+        listeCheckpoints.add(checkpoint1)
+        var checkpoint2=Checkpoint(x+205,x+295,y-letterHeight-50,y- letterHeight+50,false)
+        listeCheckpoints.add(checkpoint2)
+        var checkpoint3=Checkpoint(x+ letterWidth-90,x+ letterWidth,y-50,y+50,false)
+        listeCheckpoints.add(checkpoint3)
 
-        paintBrush.color = defaultColor
+
+            paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
+
+
 
         invalidate() // Mettre à jour la vue
     }
@@ -513,10 +530,13 @@ class PaintView : View {
         }
         return
     }
+}
 
-
-
-
-
-
+class Checkpoint(val xmin: Float, val xmax: Float, val ymin: Float, val ymax: Float, var passe: Boolean) {
+    fun isIn(x: Float, y: Float): Boolean {
+        return x in xmin..xmax && y in ymin..ymax
+    }
+    fun passeCheckpoint(){
+        this.passe=true
+    }
 }
