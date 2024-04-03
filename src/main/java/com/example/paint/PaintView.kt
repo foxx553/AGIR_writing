@@ -20,6 +20,7 @@ import com.example.paint.MainActivity.Companion.listeCheckpoints
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
 import com.example.paint.MainActivity.Companion.pathLetter
+import com.example.paint.MainActivity.Companion.pathLetter2
 import com.example.paint.MainActivity.Companion.selectedLetter
 import kotlin.math.min
 import kotlin.math.max
@@ -38,6 +39,8 @@ class PaintView : View {
     private var currentX =0
     private var currentY =0
 
+    private var nbCheckpoint =0
+
 
 
 
@@ -47,6 +50,8 @@ class PaintView : View {
 
 
     private lateinit var drawingBitmap: Bitmap
+    private lateinit var canvasApp: Canvas
+
 
     private var timer=0
 
@@ -87,6 +92,7 @@ class PaintView : View {
         var x = event.x.toInt()
         var y = event.y.toInt()
 
+
         minX = min(minX, x)
         maxX = max(maxX, x)
         minY = min(minY, y)
@@ -115,6 +121,11 @@ class PaintView : View {
                 for (checkpoint in listeCheckpoints) {
                     // Vérifier si les coordonnées x et y sont dans le checkpoint actuel
                     if (checkpoint.isIn(x.toFloat(), y.toFloat())) {
+                        if(!checkpoint.passe) {
+                            MainActivity.mediaPlayerC?.start()
+                            nbCheckpoint++
+                        }
+                        checkpoint.passeCheckpoint()
                         println("Les coordonnées ($x, $y) sont dans le checkpoint.")
                     }
                 }
@@ -157,6 +168,7 @@ class PaintView : View {
 
     override fun onDraw(canvas: Canvas) {
 
+        canvasApp=canvas
         if (drawLetter && MainActivity.isDone) {
             when(selectedLetter) {
                 "A",null -> drawCapitalA(canvas, xOfA, yOfA)
@@ -186,12 +198,16 @@ class PaintView : View {
             color = Color.GRAY // Gray color
             strokeWidth = 90f // Thicker brush stroke
         }
-
         canvas.drawPath(pathLetter, paintBrush)
+
+
+        var newDraw = true
+       /* if(selectedLetter=="A" && nbCheckpoint>3 && newDraw) {
+            drawAHorizontalLine(canvas,xOfA,yOfA)
+        }*/
 
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
-
 
 
         canvas.drawPath(path, paintBrush)
@@ -289,22 +305,22 @@ class PaintView : View {
 
         var checkpoint1=Checkpoint(x,x+90,y-50,y+50,false)
         listeCheckpoints.add(checkpoint1)
-        var checkpoint2=Checkpoint(x+205,x+295,y-letterHeight-50,y- letterHeight+50,false)
+        var checkpoint2=Checkpoint(x+letterWidth/2-50,x+letterWidth/2+50,y-letterHeight-100,y- letterHeight+100,false)
         listeCheckpoints.add(checkpoint2)
-        var checkpoint3=Checkpoint(x+ letterWidth-90,x+ letterWidth,y-50,y+50,false)
+        var checkpoint3=Checkpoint(x+ letterWidth-90,x+ letterWidth,y-100,y+100,false)
         listeCheckpoints.add(checkpoint3)
 
 
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
 
-
+        println("test")
 
         invalidate() // Mettre à jour la vue
     }
 
 
-    private fun DrawAHorizontalLine(canvas: Canvas, x: Float, y: Float){
+    private fun drawAHorizontalLine(canvas: Canvas, x: Float, y: Float){
         path.reset()
         pathLetter.reset()
         val defaultColor = paintBrush.color
@@ -325,7 +341,7 @@ class PaintView : View {
         Canvas(drawingBitmap!!).drawPath(pathHoriz, paintBrush)
         canvas.drawPath(pathHoriz, paintBrush)
 
-        pathLetter=pathHoriz
+        pathLetter2=pathHoriz
 
 
         paintBrush.color = defaultColor
@@ -474,6 +490,7 @@ class PaintView : View {
         }
         val bitmapX = x
         val bitmapY = y
+
         return drawingBitmap.getPixel(bitmapX, bitmapY)
     }
 

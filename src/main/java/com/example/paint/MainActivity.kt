@@ -24,12 +24,14 @@ class MainActivity : ComponentActivity() {
         var path = Path()
         var listeCheckpoints: MutableList<Checkpoint> = mutableListOf()
         var pathLetter = Path()
+        var pathLetter2 = Path()
         var paintBrush = Paint()
         var isDone = true
         var mediaPlayerD: MediaPlayer? = null
         var mediaPlayerG: MediaPlayer? = null
         var mediaPlayerH: MediaPlayer? = null
         var mediaPlayerB: MediaPlayer? = null
+        var mediaPlayerC: MediaPlayer? = null
         var selectedLetter : String? = null
 
 
@@ -46,6 +48,8 @@ class MainActivity : ComponentActivity() {
         mediaPlayerG = MediaPlayer.create(this, R.raw.gauche)
         mediaPlayerH = MediaPlayer.create(this, R.raw.haut)
         mediaPlayerB = MediaPlayer.create(this, R.raw.bas)
+        mediaPlayerC = MediaPlayer.create(this, R.raw.correctsound)
+
 
 
 
