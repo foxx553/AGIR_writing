@@ -16,7 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
+import com.example.paint.MainActivity.Companion.drawOnce
 import com.example.paint.MainActivity.Companion.listeCheckpoints
+import com.example.paint.MainActivity.Companion.mediaPlayerC
+import com.example.paint.MainActivity.Companion.nbCheckpoint
 import com.example.paint.MainActivity.Companion.paintBrush
 import com.example.paint.MainActivity.Companion.path
 import com.example.paint.MainActivity.Companion.pathLetter
@@ -39,7 +42,7 @@ class PaintView : View {
     private var currentX =0
     private var currentY =0
 
-    private var nbCheckpoint =0
+
 
 
 
@@ -198,8 +201,16 @@ class PaintView : View {
             color = Color.GRAY // Gray color
             strokeWidth = 90f // Thicker brush stroke
         }
-        canvas.drawPath(pathLetter, paintBrush)
+        if(nbCheckpoint<3) {
+            canvas.drawPath(pathLetter, paintBrush)
+        } else {
+            if (drawOnce){
+                drawAHorizontalLine(canvas, xOfA, yOfA)
+                drawOnce = false
+            }
+            canvas.drawPath(pathLetter, paintBrush)
 
+        }
 
         var newDraw = true
        /* if(selectedLetter=="A" && nbCheckpoint>3 && newDraw) {
@@ -321,7 +332,6 @@ class PaintView : View {
 
 
     private fun drawAHorizontalLine(canvas: Canvas, x: Float, y: Float){
-        path.reset()
         pathLetter.reset()
         val defaultColor = paintBrush.color
         val defaultStrokeWidth = paintBrush.strokeWidth
@@ -341,8 +351,12 @@ class PaintView : View {
         Canvas(drawingBitmap!!).drawPath(pathHoriz, paintBrush)
         canvas.drawPath(pathHoriz, paintBrush)
 
-        pathLetter2=pathHoriz
+        pathLetter=pathHoriz
 
+        var checkpoint4=Checkpoint(x + letterWidth / 4 -50,x + letterWidth / 4 + 50,y - letterHeight / 2 -50,y - letterHeight / 2 +50,false)
+        listeCheckpoints.add(checkpoint4)
+        var checkpoint5=Checkpoint(x + 3 * letterWidth / 4-50,x + 3 * letterWidth / 4+50,y - letterHeight / 2 -50,y - letterHeight / 2 +50,false)
+        listeCheckpoints.add(checkpoint5)
 
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth

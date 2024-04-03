@@ -33,6 +33,10 @@ class MainActivity : ComponentActivity() {
         var mediaPlayerB: MediaPlayer? = null
         var mediaPlayerC: MediaPlayer? = null
         var selectedLetter : String? = null
+        var nbCheckpoint =0
+        var drawOnce =true
+
+
 
 
 
@@ -91,6 +95,8 @@ class MainActivity : ComponentActivity() {
             isDone=true
             path.reset()
             pathLetter.reset()
+            nbCheckpoint=0
+            drawOnce=true
 
             // Square frame
 
