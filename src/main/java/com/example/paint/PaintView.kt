@@ -278,8 +278,7 @@ class PaintView : View {
         pathA.moveTo(x, y) // Déplacer le pinceau au point de départ
         pathA.lineTo(x + letterWidth / 2, y - letterHeight) // Dessiner la première ligne ascendante
         pathA.lineTo(x + letterWidth, y) // Dessiner la barre horizontale du milieu
-        pathA.moveTo(x + letterWidth / 4, y - letterHeight / 2) // Déplacer le pinceau au milieu
-        pathA.lineTo(x + 3 * letterWidth / 4, y - letterHeight / 2) // Dessiner la barre horizontale du milieu
+
 
         canvas.drawPath(pathA, paintBrush)
         drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
@@ -296,12 +295,44 @@ class PaintView : View {
         listeCheckpoints.add(checkpoint3)
 
 
-            paintBrush.color = defaultColor
+        paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
 
 
 
         invalidate() // Mettre à jour la vue
+    }
+
+
+    private fun DrawAHorizontalLine(canvas: Canvas, x: Float, y: Float){
+        path.reset()
+        pathLetter.reset()
+        val defaultColor = paintBrush.color
+        val defaultStrokeWidth = paintBrush.strokeWidth
+
+        paintBrush.apply {
+            color = Color.GRAY // Couleur grise
+            strokeWidth = 90f // Largeur du pinceau plus large
+        }
+
+        val pathHoriz = Path()
+
+        pathHoriz.moveTo(x + letterWidth / 4, y - letterHeight / 2) // Déplacer le pinceau au milieu
+        pathHoriz.lineTo(x + 3 * letterWidth / 4, y - letterHeight / 2) // Dessiner la barre horizontale du milieu
+
+        canvas.drawPath(pathHoriz, paintBrush)
+        drawingBitmap?.eraseColor(Color.WHITE) // Fill the bitmap with white
+        Canvas(drawingBitmap!!).drawPath(pathHoriz, paintBrush)
+        canvas.drawPath(pathHoriz, paintBrush)
+
+        pathLetter=pathHoriz
+
+
+        paintBrush.color = defaultColor
+        paintBrush.strokeWidth = defaultStrokeWidth
+
+        invalidate() // Mettre à jour la vue
+
     }
 
     private fun drawCapitalB(canvas: Canvas, x: Float, y: Float) {
