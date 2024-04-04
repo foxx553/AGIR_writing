@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
+import com.example.paint.MainActivity.Companion.didOnce
 import com.example.paint.MainActivity.Companion.drawOnce
 import com.example.paint.MainActivity.Companion.listeCheckpoints
 import com.example.paint.MainActivity.Companion.mediaPlayerC
@@ -39,6 +40,9 @@ class PaintView : View {
     private var xOfA = 0f
     private var yOfA = 0f
 
+    private var xMem = 0f
+    private var yMem = 0f
+
     private var currentX =0
     private var currentY =0
 
@@ -56,8 +60,6 @@ class PaintView : View {
     private lateinit var canvasApp: Canvas
 
 
-    private var timer=0
-
 
     companion object {
         var currentBrush = Color.BLACK
@@ -65,6 +67,8 @@ class PaintView : View {
         var maxX = 1000
         var minY = 50
         var maxY = 950
+        var timer=0
+
 
     }
 
@@ -133,11 +137,11 @@ class PaintView : View {
                     }
                 }
 
-                print(getColorAtTouch(x,y))
+                /*print(getColorAtTouch(x,y))
                 print("\n")
                 print(x)
                 print(", ")
-                println(y)
+                println(y)*/
             }
             else -> return false
         }
@@ -158,15 +162,16 @@ class PaintView : View {
         // Vérifier la version d'Android avant de lancer la vibration
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(vibrationEffect)
-            print(drawingBitmap.width)
+            //print(drawingBitmap.width)
         } else {
             // Versions d'Android antérieures à Oreo, utilisez simplement vibrate()
             vibrator.vibrate(50)
         }
-        timer++
-        if(timer%100==0){
+        if(timer%30==0){
             playInstruction()
         }
+        timer++
+
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -182,6 +187,9 @@ class PaintView : View {
                 "HorizLine" ->drawHorizontalLine(canvas, xOfA, yOfA)
                 "VertLine" ->drawVerticalLine(canvas, xOfA, yOfA)
             }
+            xMem=xOfA
+            yMem=yOfA
+            timer=0
             MainActivity.isDone=false
             drawLetter=false
         }
@@ -205,11 +213,15 @@ class PaintView : View {
             canvas.drawPath(pathLetter, paintBrush)
         } else {
             if (drawOnce){
-                drawAHorizontalLine(canvas, xOfA, yOfA)
+                drawAHorizontalLine(canvas, xMem, yMem)
                 drawOnce = false
             }
             canvas.drawPath(pathLetter, paintBrush)
 
+        }
+        if(nbCheckpoint!=0 && listeCheckpoints.size== nbCheckpoint && !didOnce){
+            didOnce=true
+            MainActivity.mediaPlayerLT?.start()
         }
 
         var newDraw = true
@@ -325,7 +337,6 @@ class PaintView : View {
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
 
-        println("test")
 
         invalidate() // Mettre à jour la vue
     }
@@ -583,12 +594,15 @@ class PaintView : View {
 
         if(distanceD==min){
             MainActivity.mediaPlayerD?.start()
+            return
         }
         if(distanceG==min){
             MainActivity.mediaPlayerG?.start()
+            return
         }
         if(distanceB==min){
             MainActivity.mediaPlayerB?.start()
+            return
         }
         return
     }

@@ -13,8 +13,10 @@ import com.example.paint.PaintView.Companion.minX
 import com.example.paint.PaintView.Companion.minY
 import android.media.MediaPlayer
 import android.widget.ImageView
+import com.example.paint.PaintView.Companion.timer
 import java.lang.Exception
 import kotlin.collections.MutableList
+import kotlin.math.ln
 
 
 
@@ -32,9 +34,11 @@ class MainActivity : ComponentActivity() {
         var mediaPlayerH: MediaPlayer? = null
         var mediaPlayerB: MediaPlayer? = null
         var mediaPlayerC: MediaPlayer? = null
+        var mediaPlayerLT: MediaPlayer? = null
         var selectedLetter : String? = null
         var nbCheckpoint =0
         var drawOnce =true
+        var didOnce = false
 
 
 
@@ -53,6 +57,8 @@ class MainActivity : ComponentActivity() {
         mediaPlayerH = MediaPlayer.create(this, R.raw.haut)
         mediaPlayerB = MediaPlayer.create(this, R.raw.bas)
         mediaPlayerC = MediaPlayer.create(this, R.raw.correctsound)
+        mediaPlayerLT = MediaPlayer.create(this, R.raw.letterdone)
+
 
 
 
@@ -97,6 +103,21 @@ class MainActivity : ComponentActivity() {
             pathLetter.reset()
             nbCheckpoint=0
             drawOnce=true
+            didOnce=false
+
+
+            var base =100
+            for (checkpoint in listeCheckpoints) {
+                if (!checkpoint.passe) {
+                    base -= 20
+                }
+            }
+            println(base)
+            var score = (base-timer/10.0).toInt()
+            if(score<0)
+                score=0
+            finishBtn.contentDescription ="Dernier score : $score"
+            listeCheckpoints.clear()
 
             // Square frame
 
