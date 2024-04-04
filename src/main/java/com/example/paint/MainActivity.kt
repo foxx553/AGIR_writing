@@ -116,7 +116,7 @@ class MainActivity : ComponentActivity() {
             var score = (base-timer/10.0).toInt()
             if(score<0)
                 score=0
-            finishBtn.contentDescription ="Dernier score : $score"
+            finishBtn.contentDescription ="Valider, Dernier score : $score"
             listeCheckpoints.clear()
 
             // Square frame
