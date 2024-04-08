@@ -22,6 +22,15 @@ import kotlin.math.ln
 
 class MainActivity : ComponentActivity() {
 
+    fun Reset(){
+        isDone=true
+        path.reset()
+        pathLetter.reset()
+        nbCheckpoint=0
+        drawOnce=true
+        didOnce=false
+    }
+
     companion object {
         var path = Path()
         var listeCheckpoints: MutableList<Checkpoint> = mutableListOf()
@@ -82,12 +91,11 @@ class MainActivity : ComponentActivity() {
         dicoLettreDesc["VertLine"] = "Ceci est un dessin de calibration pour faire une ligne verticale de la largeur des lettres que vous aurez à déssiner. Placez vous en bas de l'écran. Orientez vous à 0h et tracez un trait."
 
         if(selectedLetter !=null)
-            letterDesc.contentDescription = dicoLettreDesc[selectedLetter] + "Désactivez le talkback pour dessiner et réactivez le une fois le dessin terminé pour appuyer sur le bouton valider."
+            letterDesc.contentDescription = dicoLettreDesc[selectedLetter] + "Désactivez le talkback pour dessiner et réactivez le une fois le dessin terminé pour appuyer sur le bouton valider afin de connaître votre score."
 
         selectBtn.setOnClickListener {
-            isDone=true
-            path.reset()
-            pathLetter.reset()
+            Reset()
+            listeCheckpoints.clear()
             val intent = Intent(this, LetterSelection::class.java)
             startActivity(intent)
 
@@ -98,13 +106,8 @@ class MainActivity : ComponentActivity() {
         }
 
         finishBtn.setOnClickListener {
-            isDone=true
-            path.reset()
-            pathLetter.reset()
-            nbCheckpoint=0
-            drawOnce=true
-            didOnce=false
 
+            Reset()
 
             var base =100
             for (checkpoint in listeCheckpoints) {

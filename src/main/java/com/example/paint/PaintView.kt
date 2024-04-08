@@ -262,6 +262,11 @@ class PaintView : View {
 
         pathLetter=pathHorizLine
 
+        var checkpoint1=Checkpoint(x,x+90,y-50,y+50,false)
+        listeCheckpoints.add(checkpoint1)
+        var checkpoint2=Checkpoint(x+letterWidth-50,x+letterWidth+50,y-50,y+50,false)
+        listeCheckpoints.add(checkpoint2)
+
 
         paintBrush.color = defaultColor
         paintBrush.strokeWidth = defaultStrokeWidth
@@ -292,6 +297,11 @@ class PaintView : View {
         canvas.drawPath(pathHorizLine, paintBrush)
 
         pathLetter=pathHorizLine
+
+        var checkpoint1=Checkpoint(x,x+90,y-50,y+50,false)
+        listeCheckpoints.add(checkpoint1)
+        var checkpoint2=Checkpoint(x-50,x+50,y- letterHeight-50,y-letterHeight+50,false)
+        listeCheckpoints.add(checkpoint2)
 
 
         paintBrush.color = defaultColor
