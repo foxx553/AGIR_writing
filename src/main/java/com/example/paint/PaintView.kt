@@ -209,11 +209,21 @@ class PaintView : View {
             color = Color.GRAY // Gray color
             strokeWidth = 90f // Thicker brush stroke
         }
-        if(nbCheckpoint<3) {
+        if(nbCheckpoint<3 ) {
             canvas.drawPath(pathLetter, paintBrush)
+            if(nbCheckpoint==2 && selectedLetter?.compareTo("B")==0){
+                var checkpoint4=Checkpoint(xMem,xMem+ 90,yMem-(letterHeight/2)-50,yMem-(letterHeight/2)+50,false)
+                listeCheckpoints.add(checkpoint4)
+                var checkpoint5=Checkpoint(xMem+ letterWidth-90,xMem+ letterWidth+90,yMem-(1*letterHeight/4)-50,yMem-(1*letterHeight/4)+50,false)
+                listeCheckpoints.add(checkpoint5)
+                var checkpoint6=Checkpoint(xMem,xMem+90,yMem-50,yMem+50,false)
+                listeCheckpoints.add(checkpoint6)
+            }
         } else {
             if (drawOnce){
-                drawAHorizontalLine(canvas, xMem, yMem)
+                if(selectedLetter?.compareTo("A")==0) {
+                    drawAHorizontalLine(canvas, xMem, yMem)
+                }
                 drawOnce = false
             }
             canvas.drawPath(pathLetter, paintBrush)
@@ -414,6 +424,13 @@ class PaintView : View {
         canvas.drawPath(pathB, paintBrush)
 
         pathLetter=pathB
+
+        var checkpoint1=Checkpoint(x-40,x+90,y-50,y+50,false)
+        listeCheckpoints.add(checkpoint1)
+        var checkpoint2=Checkpoint(x-40,x+90,y-50- letterHeight,y+110- letterHeight,false)
+        listeCheckpoints.add(checkpoint2)
+        var checkpoint3=Checkpoint(x+ letterWidth,x+ letterWidth+90,y-(3*letterHeight/4)-50,y-(3*letterHeight/4)+50,false)
+        listeCheckpoints.add(checkpoint3)
 
 
         paintBrush.color = defaultColor
